@@ -1,5 +1,5 @@
 #/bin/bash
-COCKPIT='/home/rahul/Mothership'
+COCKPIT='/home/manoj/mothership/Mothership'
 PACKERCONFIG=$1
 UUID=`uuidgen`
 LOGFILE=$COCKPIT/log/$UUID.log
