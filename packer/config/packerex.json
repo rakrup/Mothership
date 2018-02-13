@@ -1,7 +1,11 @@
 {
 	"variables": {
 		"aws_access_key": "",
-		"aws_secret_key": ""
+		"aws_secret_key": "",
+		"google_account_file":"",
+		"digitalocean_api_key":"",
+		"ansible_location":"",
+		"ansible_extra_params":""
 	},
 	"builders": [{
 		"type": "amazon-ebs",
@@ -26,7 +30,7 @@
 	{
 		 "type": "googlecompute",
 		 "ssh_username": "ubuntu",
-		 "account_file": "account.json",
+		 "account_file": "{{user `google_account_file`}}",
 	         "project_id": "striking-scout-194418",
 		 "source_image": "ubuntu-1710-artful-v20180126",
 	         "zone": "us-central1-a"
@@ -34,7 +38,7 @@
 
 	{
                  "type": "digitalocean",
-		 "api_token": "9549702da990894286493720d673179f4e1daaebce85d54f473fa741fec635dc",
+		 "api_token": "{{user `digitalocean_api_key`}}",
 		 "image": "ubuntu-16-04-x64",
 		 "region": "nyc3",
 		 "size": "512mb",
@@ -49,13 +53,12 @@
 				"sudo apt-get update",
 				"sudo apt-get install software-properties-common",
 				"sudo apt-get install -y python redis-server ansible",
-				"dpkg-query -l > package.list"
+				"apt list --installed > package.list"
 			]
 		},
 		{
 			"type": "ansible",
-			"playbook_file": "apache/apache.yml",
-			"extra_arguments": ["--extra-vars","ansible_sudo_pass=rahul"]
+			"playbook_file": "{{user `ansible_location`}}"
 		},
 		{      "type": "file",
 		       "source": "package.list",
