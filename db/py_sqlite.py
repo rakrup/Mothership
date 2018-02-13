@@ -14,6 +14,7 @@ def db_create(mydb,c_query):
 def db_insert(mydb,i_query):
     connection = sqlite3.connect(mydb)
     with connection:
+        cursor = connection.cursor()
         print i_query
         cursor.execute(i_query)
         connection.commit()
