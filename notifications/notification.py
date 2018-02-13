@@ -1,23 +1,34 @@
 # Import smtplib for the actual sending function
 import smtplib
-
+import datetime
 # Import the email modules we'll need
 from email.mime.text import MIMEText
 
 # Open a plain text file for reading.  For this example, assume that
 # the text file contains only ASCII characters.
-with open('textfile', 'rb') as fp:
-    # Create a text/plain message
-    msg = MIMEText(fp.read())
+#with open('textfile', 'rb') as fp:
+        # Create a text/plain message
+def notfications(cv, build):
+    now = datetime.datetime.now()
+    #print now.strftime("%Y-%m-%d")
+    tt=now.strftime("%Y-%m-%d-%T")
+    msg1="Vulnerability detected on {0} for AMI:{1}".format(tt, build)
+    #print msg1
 
-me='manojrana.k1@gmail.com'
-#you == the recipient's email address
-msg['Subject'] = 'The contents of textfile'
-msg['From'] = "Mothership@Codeathon.com" 
-msg['To'] = me 
+    msg = MIMEText("This is sample message "+str(cv))
 
-# Send the message via our own SMTP server, but don't include the
-# envelope header.
-s = smtplib.SMTP('localhost')
-s.sendmail(me, [me,me], msg.as_string())
-s.quit()
+    me='manojrana.k1@gmail.com'
+    you=['manojrana.k1@gmail.com','vjagachittes@gmail.com'] 
+    #msg['Subject'] = 'Project motherhsip CVE details for'
+    msg['Subject'] = msg1
+    msg['From'] = "Mothership@Codeathon.com" 
+    #msg['To'] = ['manojrana.k1@gmail.com','vjagachittes@gmail.com']  
+    msg['To'] = "Codeathon" 
+
+            # Send the message via our own SMTP server, but don't include the
+            # envelope header.
+    s = smtplib.SMTP('localhost')
+    s.sendmail(me, you, msg.as_string())
+    s.quit()
+
+notfications(14, "test")
