@@ -4,6 +4,7 @@ def db_create(mydb,c_query):
     connection = sqlite3.connect(mydb)
     with connection:
         cursor = connection.cursor()
+        #Below line for debugging purpose
         #c_query = "create table if not exists build_details(CVE string, package string,ptime string)"
         cursor.execute(c_query)
         connection.commit()
