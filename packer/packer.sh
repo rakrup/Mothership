@@ -23,14 +23,14 @@ AMI=`grep ami $LOGFILE  | grep west| grep -v ec2  | awk -F':' '{print $2}'`
 DOI=`grep digitalocean $LOGFILE| grep snapshot |grep created | awk -F "'" '{print $2}'`
 GCP=`grep googlecompute $LOGFILE| grep 'disk image was created' | awk -F ":" '{print $3}'`
 
-echo "--------------------------------------"
-echo "|             Build Result           | "
-echo "--------------------------------------"
-echo "|UUID         | $UUID "
-echo "|AMI-id       | $AMI"
-echo "|Digital Ocean| $DOI"
-echo "|Google CLoud | $GCP"
-echo "--------------------------------------"
+echo "------------------------------------------------------"
+echo "|                         Build Result               | "
+echo "-----------------------------------------------------"
+echo "|UUID         | $UUID           |"
+echo "|AMI-id       | $AMI                          |"
+#echo "|Digital Ocean| $DOI"
+echo "|Google CLoud | $GCP                          |"
+echo "-----------------------------------------------------"
 echo "Copy of result also present in the $OUTPUTDIR"
 
 mkdir -p $OUTPUTDIR
