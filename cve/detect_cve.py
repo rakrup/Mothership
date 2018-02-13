@@ -3,24 +3,16 @@ import re
 import csv
 import click
 import json
+import sys
+sys.path.append('../db')
 from ares import CVESearch
 from collections import defaultdict
 import sqlite3
+import py_sqlite
 
-
-def db_insert(i_query):
-    connection = sqlite3.connect("mydatabase.db")
-    with connection:
-        cursor = connection.cursor()
-        c_query = "create table if not exists cve_details(CVE string, package string,ptime string)"
-        cursor.execute(c_query)
-        print i_query
-        cursor.execute(i_query)
-        connection.commit()
-
-    if connection:
-       connection.close()
-
+c_query = "create table if not exists cve_details_bkp(build_no string,CVE string, package string,ptime string,updated_ts DATETIME DEFAULT CURRENT_TIMESTAMP)"
+db_name="mydatabase.db"
+py_sqlite.db_create(db_name,c_query)
 PRIORITY_PATTERNS = {
     'low': re.compile('Priority:'),
     'medium': re.compile('Priority: [mh]'),
@@ -46,12 +38,15 @@ No further details available.
 def scan_packages(packages_listing, active_cve_directory, ubuntu_version, priority_threshold, any_status):
     cves = load_cves(active_cve_directory, ubuntu_version, priority_threshold)
     next(packages_listing) # remove header
+    cve_counter = 0
     for package_line in packages_listing:
         package, _, _ = package_line.partition(b'/')
         package = package.decode('utf-8')
 	#print package
         if package in cves:
+            cve_counter = cve_counter + 1
             output_details(package, cves[package], any_status)
+    print cve_counter
 
 def output_details(package, cves, any_status=False):
     for cve, status in cves:
@@ -73,9 +68,10 @@ def print_cve(cve, package):
             #summary=details['summary'],
             #references=' '.join(details['references'])
         ))
-        query = "INSERT INTO cve_details(CVE, package,ptime) VALUES('"+cve+"','"+package+"','"+details['Published']+"')"
+        query = "INSERT INTO cve_details_bkp(build_no,CVE, package,ptime) VALUES('test_build','"+cve+"','"+package+"','"+details['Published']+"')"
         #print query
-        db_insert(query)
+        py_sqlite.db_insert(db_name,query)
+        #db_insert(query)
     else:
         print(CVE_NO_DETAILS_TEMPLATE.format(id=cve, package=package))
 
