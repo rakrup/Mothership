@@ -10,7 +10,7 @@
                  ansible_distribution == 'Fedora'
           become: yes
 
-        - name: Install the 'build-essential' meta package group
+        - name: Install the 'web-server' meta package group
           package: name="apache2" state=present
           when: ansible_distribution == 'Debian' or
                 ansible_distribution == 'Ubuntu'

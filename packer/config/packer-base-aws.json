@@ -15,7 +15,7 @@
 		"source_ami" : "ami-b26861d2",
 		"instance_type": "t2.micro",
 		"ssh_username": "ubuntu",
-		"ami_name": "demo_rahul_{{timestamp}}"
+		"ami_name": "demo_mothership_v1{{timestamp}}"
 	}
 
 	
@@ -28,9 +28,8 @@
 		{
 			"type": "shell",
 			"inline": [
-				"sleep 30",
-				"sudo apt-get update",
-				"sudo apt-get install -y python redis-server ansible",
+				"sleep 5",
+				"ifconfig",
 				"apt list --installed > package.list"
 			]
 		},
