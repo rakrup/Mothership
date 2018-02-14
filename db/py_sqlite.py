@@ -23,3 +23,15 @@ def db_insert(mydb,i_query):
     if connection:
        connection.close()
 
+def db_select1(mydb,s_query):
+    connection = sqlite3.connect(mydb)
+    with connection:
+        cursor = connection.cursor()
+        print s_query
+        cursor.execute(s_query)
+        r = cursor.fetchone()[0]
+        connection.commit()
+        return r
+
+    if connection:
+       connection.close()

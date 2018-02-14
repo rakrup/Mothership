@@ -6,14 +6,25 @@ import json
 import sys
 parent_dir_name = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 sys.path.append(parent_dir_name+"/db")
+sys.path.append(parent_dir_name+"/taggingScript")
 from ares import CVESearch
 from collections import defaultdict
 import sqlite3
 import py_sqlite
+import tagImages
 
-c_query = "create table if not exists cve_details_bkp(build_no string,CVE string, package string,ptime string,updated_ts DATETIME DEFAULT CURRENT_TIMESTAMP)"
-db_name="mydatabase.db"
+var=sys.argv[1]
+b_id=var.split("/")[1]
+print b_id
+query="select ami_id from packer_run where build_no='"+b_id+"'"
+
+c_query = "create table if not exists cve_details(build_no string,CVE string, package string,ptime string,updated_ts DATETIME DEFAULT CURRENT_TIMESTAMP)"
+db_name="db/packerDB.db"
+
 py_sqlite.db_create(db_name,c_query)
+ami=py_sqlite.db_select1(db_name,query)
+print ami
+#exit(0)
 PRIORITY_PATTERNS = {
     'low': re.compile('Priority:'),
     'medium': re.compile('Priority: [mh]'),
@@ -48,6 +59,8 @@ def scan_packages(packages_listing, active_cve_directory, ubuntu_version, priori
             cve_counter = cve_counter + 1
             output_details(package, cves[package], any_status)
     print cve_counter
+    if cve_counter > 0:
+        tagImages.tagAWSami(ami)
 
 def output_details(package, cves, any_status=False):
     for cve, status in cves:
@@ -69,7 +82,7 @@ def print_cve(cve, package):
             #summary=details['summary'],
             #references=' '.join(details['references'])
         ))
-        query = "INSERT INTO cve_details_bkp(build_no,CVE, package,ptime) VALUES('test_build','"+cve+"','"+package+"','"+details['Published']+"')"
+        query = "INSERT INTO cve_details(build_no,CVE, package,ptime) VALUES('test_build','"+cve+"','"+package+"','"+details['Published']+"')"
         #print query
         py_sqlite.db_insert(db_name,query)
         #db_insert(query)

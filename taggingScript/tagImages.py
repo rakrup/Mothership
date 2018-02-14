@@ -9,7 +9,7 @@ from oauth2client.client import GoogleCredentials
 import os
 import json
 import sys
-import digitalocean
+#import digitalocean
 #
 # GET Session Credentials stored in 
 # ~/.aws/credentials in Environment Variables 
