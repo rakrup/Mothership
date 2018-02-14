@@ -26,7 +26,7 @@ import sys
 # expects ami Id as input ami is of string type
 def tagAWSami(ami):
 	sess=boto3.Session()
-	ec2Client=sess.resource('ec2')
+	ec2Client=sess.resource('ec2',region_name='us-west-1')
 	image=ec2Client.Image(ami)
 	try:
        		image.create_tags(\
@@ -52,7 +52,7 @@ def tagGCPImg(img):
 	g_service = discovery.build('compute', 'v1', credentials=g_credentials)
 	data = json.load(open(os.environ['GOOGLE_APPLICATION_CREDENTIALS']))
 	project=data.get('project_id')
-    	try:	
+    	try:
         	request=g_service.images().get(project=project, image=img)
         	response=request.execute()
         	#pprint(response)
