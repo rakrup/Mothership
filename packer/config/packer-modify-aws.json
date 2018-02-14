@@ -15,7 +15,7 @@
 		"source_ami" : "ami-de747dbe",
 		"instance_type": "t2.micro",
 		"ssh_username": "ubuntu",
-		"ami_name": "demo_mothership_v2{{timestamp}}"
+		"ami_name": "demo-mothership-v2{{timestamp}}"
 	}
 
 	
