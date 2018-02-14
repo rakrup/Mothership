@@ -82,7 +82,7 @@ def print_cve(cve, package):
             #summary=details['summary'],
             #references=' '.join(details['references'])
         ))
-        query = "INSERT INTO cve_details(build_no,CVE, package,ptime) VALUES('test_build','"+cve+"','"+package+"','"+details['Published']+"')"
+        query = "INSERT INTO cve_details(build_no,CVE, package,ptime) VALUES('"+b_id+"','"+cve+"','"+package+"','"+details['Published']+"')"
         #print query
         py_sqlite.db_insert(db_name,query)
         #db_insert(query)
