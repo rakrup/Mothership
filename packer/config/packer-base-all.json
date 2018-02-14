@@ -1,0 +1,52 @@
+{
+	"variables": {
+		"aws_access_key": "",
+		"aws_secret_key": "",
+		"google_account_file":"",
+		"digitalocean_api_key":"",
+		"ansible_location":"",
+		"ansible_extra_params":""
+	},
+	"builders": [{
+		"type": "amazon-ebs",
+		"access_key": "{{user `aws_access_key`}}",
+		"secret_key": "{{user `aws_secret_key`}}",
+		"region": "us-west-1",
+		"source_ami" : "ami-b26861d2",
+		"instance_type": "t2.micro",
+		"ssh_username": "ubuntu",
+		"ami_name": "demo_mothership_v1{{timestamp}}"
+	},
+
+	{
+		"type": "googlecompute",
+		"ssh_username": "ubuntu",
+		"account_file": "{{user `google_account_file`}}",
+		"project_id": "striking-scout-194418",
+		"source_image": "ubuntu-1710-artful-v20180126",
+		"zone": "us-central1-a",
+		"image_name": "demo_mothership_v1{{timestamp}}"
+	}
+	
+	],
+	"provisioners": [
+        {
+			"type": "ansible",
+			"playbook_file": "{{user `ansible_location`}}"
+		},
+		{
+			"type": "shell",
+			"inline": [
+				"sleep 5",
+				"ifconfig",
+				"apt list --installed > package.list"
+			]
+		},
+		{      "type": "file",
+		       "source": "package.list",
+		       "destination": "package.list",
+		       "direction": "download"
+		}
+
+	]
+}
