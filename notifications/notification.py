@@ -23,7 +23,7 @@ def notfications(cv, build):
     msg['Subject'] = msg1
     msg['From'] = "Mothership@Codeathon.com" 
     #msg['To'] = ['manojrana.k1@gmail.com','vjagachittes@gmail.com']  
-    msg['To'] = "Codeathon" 
+    msg['To'] = "manojrana.k1@gmail.com" 
 
             # Send the message via our own SMTP server, but don't include the
             # envelope header.

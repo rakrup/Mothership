@@ -7,7 +7,7 @@ import py_sqlite
 
 # Create the table in database
 c_query = "create table if not exists packer_run(build_no string,build_time string, ami_id string,gcloud_id string,updated_ts DATETIME DEFAULT CURRENT_TIMESTAMP)"
-db_name="packerDB.db"
+db_name=parent_dir_name+"/db/"+"packerDB.db"
 py_sqlite.db_create(db_name,c_query)
 
 

@@ -16,15 +16,6 @@
 		"instance_type": "t2.micro",
 		"ssh_username": "ubuntu",
 		"ami_name": "demo_rahul_{{timestamp}}"
-	},
-
-	{
-		 "type": "googlecompute",
-		 "ssh_username": "ubuntu",
-		 "account_file": "{{user `google_account_file`}}",
-	         "project_id": "striking-scout-194418",
-		 "source_image": "ubuntu-1710-artful-v20180126",
-	         "zone": "us-central1-a"
 	}
 
 	

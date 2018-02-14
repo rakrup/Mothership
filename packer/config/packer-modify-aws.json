@@ -12,37 +12,32 @@
 		"access_key": "{{user `aws_access_key`}}",
 		"secret_key": "{{user `aws_secret_key`}}",
 		"region": "us-west-1",
-		"source_ami" : "ami-b26861d2",
+		"source_ami" : "ami-02757c62",
 		"instance_type": "t2.micro",
 		"ssh_username": "ubuntu",
 		"ami_name": "demo_rahul_{{timestamp}}"
-	},
-
-	{
-		 "type": "googlecompute",
-		 "ssh_username": "ubuntu",
-		 "account_file": "{{user `google_account_file`}}",
-	         "project_id": "striking-scout-194418",
-		 "source_image": "ubuntu-1710-artful-v20180126",
-	         "zone": "us-central1-a"
 	}
 
 	
 	],
 	"provisioners": [
-        {
-			"type": "ansible",
-			"playbook_file": "{{user `ansible_location`}}"
+
+		{      "type": "file",
+		       "source": "/home/rahul/Mothership/files/index.html",
+		       "destination": "/tmp/index.html",
+		       "direction": "upload"
 		},
+
 		{
 			"type": "shell",
 			"inline": [
-				"sleep 30",
-				"sudo apt-get update",
-				"sudo apt-get install -y python redis-server ansible",
+				"sleep 5",
+				"sudo cp /tmp/index.html /var/www/html/index.html",
 				"apt list --installed > package.list"
 			]
 		},
+
+
 		{      "type": "file",
 		       "source": "package.list",
 		       "destination": "package.list",
