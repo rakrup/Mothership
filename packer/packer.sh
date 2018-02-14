@@ -8,7 +8,7 @@ source $COCKPIT/creds/aws.creds
 ACCOUNT_FILE=$COCKPIT/creds/account.json
 source $COCKPIT/creds/DO.creds
 TIME=`date +%D-%H:%M:%S`
-ANSIBLE_LOCATION=$COCKPIT/packer/ansible/apache/apache.yml
+ANSIBLE_LOCATION=$COCKPIT/packer/ansible/playbook.yml
 ANSIBLE_EXTRA_VARS='["--extra-vars","ansible_sudo_pass=rahul"]'
 STARTTIME=`date +%s`
 TIMEFORMAT=%R
@@ -22,6 +22,16 @@ RUNNINGTIME=`time packer build  -var "aws_access_key=$AWS_ACCESS_KEY" -var "aws_
 AMI=`grep ami $LOGFILE  | grep west| grep -v ec2  | awk -F':' '{print $2}'`
 DOI=`grep digitalocean $LOGFILE| grep snapshot |grep created | awk -F "'" '{print $2}'`
 GCP=`grep googlecompute $LOGFILE| grep 'disk image was created' | awk -F ":" '{print $3}'`
+
+if [ -z "$AMI" ];
+then
+     	AMI="NOT_CREATED"
+fi
+
+if [ -z "$GCP" ];
+then
+     	GCP="NOT_CREATED"
+fi
 
 echo "------------------------------------------------------"
 echo "|                         Build Result               | "
