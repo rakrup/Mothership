@@ -8,6 +8,7 @@ from googleapiclient import discovery
 from oauth2client.client import GoogleCredentials
 import os
 import json
+import sys
 import digitalocean
 #
 # GET Session Credentials stored in 
@@ -43,8 +44,10 @@ def tagAWSami(ami):
 
 # expects img id as input and type is of string
 def tagGCPImg(img):
-         
-	os.environ['GOOGLE_APPLICATION_CREDENTIALS']="/Users/gauravsingh/Documents/2712reiminder-0ce115eb71b6.json"
+        parent_dir_name = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+        access_file=parent_dir_name+"creds/account.json"
+	#print access_file
+	os.environ['GOOGLE_APPLICATION_CREDENTIALS']=access_file
 	g_credentials = GoogleCredentials.get_application_default()
 	g_service = discovery.build('compute', 'v1', credentials=g_credentials)
 	data = json.load(open(os.environ['GOOGLE_APPLICATION_CREDENTIALS']))
@@ -58,7 +61,7 @@ def tagGCPImg(img):
               		"status":"vulnerable",
            	},
            	"labelFingerprint": response.get('labelFingerprint'),
-		}	
+		}
 
 		request = g_service.images().setLabels(project=project, resource=img, body=labels_request_body)
 		response = request.execute()
@@ -67,7 +70,7 @@ def tagGCPImg(img):
                 print "Image not found"
 
 # expects droplet id as input and it should be of string type 
-def tagdigitDroplet(drop_id):       
+def tagdigitDroplet(drop_id):
 	os.environ['DIGITAL_KEY']="/Users/gauravsingh/Documents/digitaltoken.txt"
 	access_key=""
 	f = open(os.environ['DIGITAL_KEY'], 'r')
